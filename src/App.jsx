@@ -8,12 +8,15 @@ import Edge from './models/Edge.js'
 
 const thick = 5;
 const ribbonWidth = 250;
+const selectColor = "#5a728d";
+const edgeColor = "#AAB9C9";
+const nodeColor = "#7d7f82";
 
 
 let nodesData= [
-  new Node("A", 150, 150),
-  new Node("B", 350, 350),
-  new Node("C", 350, 350)
+  new Node("A", 50, -50),
+  new Node("B", 50, 100),
+  new Node("C", -50, 100)
 ]
 let edgesData= [
   new Edge("AB", nodesData[0], nodesData[1], 1),
@@ -25,13 +28,30 @@ function App() {
   const [stagePos, setStagePos] = useState({ x: (window.innerWidth/2)+ribbonWidth/2, y: window.innerHeight/2 });
   const [nodes, setNodes] = useState(nodesData);
   const [edges, setEdges] = useState(edgesData);
+  const [selected, setSelected] = useState(new Selection("NONE", null, null));
 
   const handleDragMove = (e, node) => {
     node.x = Math.floor(e.target.x());
     node.y = Math.floor(e.target.y());
-
     setNodes((prev) => [...prev]);
   };
+  const selectElement = (type, e, element) => {
+    deselectCurrent();
+
+    if (type === "NODE") {
+      e.target.fill(selectColor);
+    } else if (type === "EDGE") {
+      e.target.stroke(selectColor);
+    }
+
+    setSelected(new Selection(type, e.target, element));
+  };
+  const deselectCurrent = () => {
+    if(selected.type === "NODE")
+      selected.target.fill(nodeColor);
+    else if(selected.type === "EDGE")
+      selected.target.stroke(edgeColor);
+  }
   
   return (
     <>
@@ -49,16 +69,49 @@ function App() {
           }}>
           <Grid stagePos={stagePos} />
           <Layer>
+            {edges.map(edge => (
+              <Line
+                points={[edge.start.x, edge.start.y, edge.end.x, edge.end.y]}
+                stroke={edgeColor}
+                strokeWidth={thick * 2}
+                key={edge.id}
+                onClick={e => selectElement("EDGE", e, edge)}
+              />))
+            }
 
-            {edges.map(edge => (<Line points={[edge.start.x, edge.start.y, edge.end.x, edge.end.y]} stroke="#AAB9C9" strokeWidth={thick * 2} key={edge.id}/>))}
-            {nodes.map(node => (<Circle x={node.x} y={node.y} radius={thick} fill="#7d7f82" key={node.id} draggable onDragMove={e => handleDragMove(e, node)}/>))}
-
+            {nodes.map(node => (
+              <Circle
+                x={node.x} y={node.y}
+                radius={thick}
+                fill={nodeColor}
+                key={node.id}
+                draggable
+                onDragMove={e => handleDragMove(e, node)}
+                onClick={e => selectElement("NODE", e, node)}
+                onDragStart={e => selectElement("NODE", e, node)}
+              />))
+            }
           </Layer>
         </Stage>
       </div>
-      <Ribbon ribbonWidth={ribbonWidth}/>
+      <Ribbon
+        ribbonWidth={ribbonWidth}
+        nodes={nodes}
+        setNodes={setNodes}
+        selected={selected}
+        setSelected={setSelected}
+        edges={edges}
+      />
     </>
   );
+}
+
+class Selection {
+  constructor(type, target, element) {
+    this.type = type;
+    this.target = target;
+    this.element = element;
+  }
 }
 
 export default App
