@@ -5,7 +5,9 @@ structure. This application allows users to design maps by defining intersection
 with attributes like direction and speed limits. It is built with React to ensure scalability, reusability, 
 and a user-friendly interface.
 
-## Features
+This project is built as a prerequisite another project to be developed later.
+
+## Features (in development)
 
 - **Interactive Graph Editor**:
     - Add and position nodes (intersections or endpoints).
@@ -27,5 +29,3 @@ and a user-friendly interface.
 - **Map Export/Import**:
     - Export maps as JSON for use in other projects.
     - Import maps for further editing or visualization.
-
-This project is meant for Integration with another project to be developed later.
