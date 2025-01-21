@@ -1,12 +1,10 @@
 
 class Edge {
-  constructor(id, start, end) {
+  constructor(id, name, start, end) {
     this.id = id;
+    this.name = name;
     this.start = start;
     this.end = end;
-  }
-  addToState(setter) {
-    setter(prevEdges => [...prevEdges, this]);
   }
 }
 

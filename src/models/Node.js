@@ -1,11 +1,9 @@
 class Node {
-  constructor(id, x, y) {
+  constructor(id, name, x, y) {
     this.id = id;
+    this.name = name;
     this.x = x;
     this.y = y;
-  }
-  addToState(setter) {
-    setter(prevNodes => [...prevNodes, this]);
   }
 }
 

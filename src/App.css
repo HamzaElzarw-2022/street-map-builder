@@ -1,6 +1,67 @@
 .container {
   background: #1E1F22;
 }
+.standard-font {
+    font-size: 14px;
+    font-weight: 600;
+}
+/*ribbon*/
 .ribbon {
     border-right: 0.5px solid #515151;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+    height: 100%;
+    background: #16161A;
+    position: fixed;
+    top: 0;
+    left: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+
 }
+.ribbon-section {
+    margin: 10px;
+    padding: 10px;
+    border: 0.5px solid #515151;
+    border-radius: 10px;
+}
+.ribbon-subsection {
+    margin-top: 10px;
+    padding: 10px;
+    border: 0.5px solid #515151;
+    border-radius: 10px;
+}
+.section-row {
+    display: flex;
+    border-bottom: 0.5px solid #515151;
+    padding-bottom: 4px;
+    margin-bottom: 4px;
+
+}
+.section-row-item {
+    flex: 1 1 0;
+    max-width: 50%;
+    display: flex;
+    align-items: center;
+}
+.section-row-input {
+    border: none;
+    border-radius: 3px;
+    font-weight: normal;
+    padding: 0 5px;
+    background: #323236;
+}
+.margin-top-10 {
+    margin-top: 10px;
+}
+.blue-background {
+    background: #213547;
+}
+.center {
+    text-align: center;
+}
+.font-size-2 {
+    font-size: 16px;
+    padding: 5px 5px;
+}
+

@@ -1,26 +1,26 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import './App.css'
 import Grid from './Grid.jsx'
 import Ribbon from './Ribbon.jsx'
-import { Stage, Layer, Circle, Line, Text} from 'react-konva';
+import { Stage, Layer, Circle, Line } from 'react-konva';
 import Node from './models/Node.js'
 import Edge from './models/Edge.js'
 
 const thick = 5;
-const ribbonWidth = 250;
+const ribbonWidth = 300;
 const selectColor = "#5a728d";
 const edgeColor = "#AAB9C9";
 const nodeColor = "#7d7f82";
 
 
 let nodesData= [
-  new Node("A", 50, -50),
-  new Node("B", 50, 100),
-  new Node("C", -50, 100)
+  new Node("A", "intersection1", 50, -50),
+  new Node("B", "intersection2", 50, 100),
+  new Node("C", "intersection3", -50, 100)
 ]
 let edgesData= [
-  new Edge("AB", nodesData[0], nodesData[1], 1),
-  new Edge("BC", nodesData[1], nodesData[2], 2)
+  new Edge("AB", "millet", nodesData[0], nodesData[1], 1),
+  new Edge("BC", "salah", nodesData[1], nodesData[2], 2)
 ]
 
 function App() {
