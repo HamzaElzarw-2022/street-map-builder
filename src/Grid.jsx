@@ -14,9 +14,9 @@ function Grid({stagePos, deselectCurrent}){
     Math.floor((-stagePos.y + window.innerHeight * 2) / UNIT) * UNIT;
 
   const gridComponents = [];
-  var i = 0;
-  for (var x = startX; x < endX; x += UNIT) {
-    for (var y = startY; y < endY; y += UNIT) {
+  let i = 0;
+  for (let x = startX; x < endX; x += UNIT) {
+    for (let y = startY; y < endY; y += UNIT) {
       if (i === 4) {
         i = 0;
       }

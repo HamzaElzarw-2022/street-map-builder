@@ -2,7 +2,7 @@ class Node {
 
 
   /**
-   * @param {string} id - The unique identifier for the node.
+   * @param {number} id - The unique identifier for the node.
    * @param {string} name - The name of the node.
    * @param {number} x - The x-coordinate of the node (integer).
    * @param {number} y - The y-coordinate of the node (integer).

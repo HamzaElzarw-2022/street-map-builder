@@ -1,8 +1,8 @@
-
+// TODO: add detailed data for edge (street)
 class Edge {
 
   /**
-   * @param {string} id - Unique identifier for the edge.
+   * @param {number} id - Unique identifier for the edge.
    * @param {string} name - Name of the edge.
    * @param {Node} start - Starting node of the edge.
    * @param {Node} end - Ending node of the edge.

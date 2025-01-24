@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './App.css'
 import Grid from './Grid.jsx'
 import Ribbon from './Ribbon.jsx'
@@ -8,21 +8,22 @@ import Edge from './models/Edge.js'
 
 const thick = 5;
 const ribbonWidth = 300;
-const selectColor = "#5a728d";
+const selectedEdgeColor = "#5a728d";
 const edgeColor = "#AAB9C9";
 const nodeColor = "#7d7f82";
-const startColor = "#acff95"; // Cyan
-const endColor = "#5a728d";  // Yellow
-
+export const startColor = "#32552a"; // Cyan
+export const endColor = "#222f39";  // Yellow
 
 let nodesData= [
-  new Node("A", "intersection1", 50, -50),
-  new Node("B", "intersection2", 50, 100),
-  new Node("C", "intersection3", -50, 100)
+  new Node(1, "intersection1", 50, -50),
+  new Node(2, "intersection2", 50, 100),
+  new Node(3, "intersection3", -50, 100),
+  new Node(4, "intersection4", 100, 50)
 ]
 let edgesData= [
-  new Edge("AB", "millet", nodesData[0], nodesData[1], 1),
-  new Edge("BC", "salah", nodesData[1], nodesData[2], 2)
+  new Edge(1, "millet", nodesData[0], nodesData[1]),
+  new Edge(2, "street", nodesData[1], nodesData[2]),
+  new Edge(3, "Cadde 4", nodesData[1], nodesData[3])
 ]
 
 function App() {
@@ -30,9 +31,13 @@ function App() {
   const [stagePos, setStagePos] = useState({ x: (window.innerWidth/2)+ribbonWidth/2, y: window.innerHeight/2 });
   const [nodes, setNodes] = useState(nodesData);
   const [edges, setEdges] = useState(edgesData);
-  //TODO: update selected as there is no need for selection object anymore
-  const [selected, setSelected] = useState(new Selection("NONE", null, null));
+  const [selected, setSelected] = useState({type: null, id: null});
+  // TODO: disable side change state if disrupted with other operations
   const [sideToChange, setSideToChange] = useState(null);
+
+  useEffect(() => {
+    console.log("Selected was changed:", selected);
+  }, [selected]);
 
   const handleDragMove = (e, node) => {
     node.x = Math.floor(e.target.x());
@@ -40,20 +45,25 @@ function App() {
     setNodes((prev) => [...prev]);
   };
 
-  const selectElement = (type, e, element) => {
+  const selectElement = (type, element) => {
+
+    //use selected as reference
     if (sideToChange !== null && type === "NODE" && selected.type === "EDGE") {
-      selected.element[sideToChange] = element;
-      setSideToChange(null);
-      return;
+      setEdges((prev) => prev.map(edge => {
+        if(edge.id === selected.id)
+          edge[sideToChange] = element;
+        return edge;
+      }));
     }
-    //TODO: if side change is not null but type is not node (show message for incompatible selection)
+    else {
+      setSelected({type, id: element.id});
+    }
     setSideToChange(null);
-    setSelected(new Selection(type, e.target, element));
   };
 
   const deselectCurrent = () => {
     setSideToChange(null);
-    setSelected(new Selection("NONE", null, null));
+    setSelected({type: null, id: null});
   }
   
   return (
@@ -65,6 +75,7 @@ function App() {
           width={window.innerWidth}
           height={window.innerHeight}
           draggable
+          // TODO: add zoom in and out functionality
           scaleX={1}
           scaleY={1}
           onDragEnd={e => {
@@ -82,7 +93,7 @@ function App() {
                 stroke={edgeColor}
                 strokeWidth={thick * 2}
                 key={edge.id}
-                onClick={e => selectElement("EDGE", e, edge)}
+                onClick={() => selectElement("EDGE", edge)}
               />))
             }
 
@@ -94,23 +105,23 @@ function App() {
                 key={node.id}
                 draggable
                 onDragMove={e => handleDragMove(e, node)}
-                onClick={e => selectElement("NODE", e, node)}
-                onDragStart={e => selectElement("NODE", e, node)}
+                onClick={() => selectElement("NODE", node)}
+                onDragStart={() => selectElement("NODE", node)}
               />))
             }
           </Layer>
 
           {/* highlight selected element layer */}
           <Layer listening={false} >
-            {selected.type === "NODE" && (
-              <Circle x={selected.element.x} y={selected.element.y} radius={thick} fill={selectColor}/>
+            {(selected.type === "NODE") && nodes.filter(node => node.id===selected.id).map(node =>
+              <Circle x={node.x} y={node.y} radius={thick} fill={startColor}/>
             )}
-            {selected.type === "EDGE" && (
-              <>
-                <Line points={[selected.element.start.x, selected.element.start.y, selected.element.end.x, selected.element.end.y]} stroke={selectColor} strokeWidth={thick * 2}/>
-                <Circle x={selected.element.start.x} y={selected.element.start.y} radius={thick} fill={startColor}/>
-                <Circle x={selected.element.end.x} y={selected.element.end.y} radius={thick} fill={endColor}/>
-              </>
+            {(selected.type === "EDGE") && edges.filter(edge => edge.id===selected.id).map(edge =>
+                <>
+                  <Line points={[edge.start.x, edge.start.y, edge.end.x, edge.end.y]} stroke={selectedEdgeColor} strokeWidth={thick * 2}/>
+                  <Circle x={edge.start.x} y={edge.start.y} radius={thick} fill={startColor}/>
+                  <Circle x={edge.end.x} y={edge.end.y} radius={thick} fill={endColor}/>
+                </>
             )}
           </Layer>
 
@@ -123,19 +134,12 @@ function App() {
         selected={selected}
         setSelected={setSelected}
         edges={edges}
+        setEdges={setEdges}
         setSideToChange={setSideToChange}
         sideToChange={sideToChange}
       />
     </>
   );
-}
-
-class Selection {
-  constructor(type, target, element) {
-    this.type = type;
-    this.target = target;
-    this.element = element;
-  }
 }
 
 export default App
