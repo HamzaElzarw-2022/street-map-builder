@@ -11,6 +11,8 @@ const ribbonWidth = 300;
 const selectColor = "#5a728d";
 const edgeColor = "#AAB9C9";
 const nodeColor = "#7d7f82";
+const startColor = "#acff95"; // Cyan
+const endColor = "#5a728d";  // Yellow
 
 
 let nodesData= [
@@ -28,29 +30,30 @@ function App() {
   const [stagePos, setStagePos] = useState({ x: (window.innerWidth/2)+ribbonWidth/2, y: window.innerHeight/2 });
   const [nodes, setNodes] = useState(nodesData);
   const [edges, setEdges] = useState(edgesData);
+  //TODO: update selected as there is no need for selection object anymore
   const [selected, setSelected] = useState(new Selection("NONE", null, null));
+  const [sideToChange, setSideToChange] = useState(null);
 
   const handleDragMove = (e, node) => {
     node.x = Math.floor(e.target.x());
     node.y = Math.floor(e.target.y());
     setNodes((prev) => [...prev]);
   };
+
   const selectElement = (type, e, element) => {
-    deselectCurrent();
-
-    if (type === "NODE") {
-      e.target.fill(selectColor);
-    } else if (type === "EDGE") {
-      e.target.stroke(selectColor);
+    if (sideToChange !== null && type === "NODE" && selected.type === "EDGE") {
+      selected.element[sideToChange] = element;
+      setSideToChange(null);
+      return;
     }
-
+    //TODO: if side change is not null but type is not node (show message for incompatible selection)
+    setSideToChange(null);
     setSelected(new Selection(type, e.target, element));
   };
+
   const deselectCurrent = () => {
-    if(selected.type === "NODE")
-      selected.target.fill(nodeColor);
-    else if(selected.type === "EDGE")
-      selected.target.stroke(edgeColor);
+    setSideToChange(null);
+    setSelected(new Selection("NONE", null, null));
   }
   
   return (
@@ -67,7 +70,11 @@ function App() {
           onDragEnd={e => {
             setStagePos(e.currentTarget.position());
           }}>
-          <Grid stagePos={stagePos} />
+
+          {/* background grid layer */}
+          <Grid stagePos={stagePos} deselectCurrent={deselectCurrent}/>
+
+          {/* map elements layer */}
           <Layer>
             {edges.map(edge => (
               <Line
@@ -92,6 +99,21 @@ function App() {
               />))
             }
           </Layer>
+
+          {/* highlight selected element layer */}
+          <Layer listening={false} >
+            {selected.type === "NODE" && (
+              <Circle x={selected.element.x} y={selected.element.y} radius={thick} fill={selectColor}/>
+            )}
+            {selected.type === "EDGE" && (
+              <>
+                <Line points={[selected.element.start.x, selected.element.start.y, selected.element.end.x, selected.element.end.y]} stroke={selectColor} strokeWidth={thick * 2}/>
+                <Circle x={selected.element.start.x} y={selected.element.start.y} radius={thick} fill={startColor}/>
+                <Circle x={selected.element.end.x} y={selected.element.end.y} radius={thick} fill={endColor}/>
+              </>
+            )}
+          </Layer>
+
         </Stage>
       </div>
       <Ribbon
@@ -101,6 +123,8 @@ function App() {
         selected={selected}
         setSelected={setSelected}
         edges={edges}
+        setSideToChange={setSideToChange}
+        sideToChange={sideToChange}
       />
     </>
   );

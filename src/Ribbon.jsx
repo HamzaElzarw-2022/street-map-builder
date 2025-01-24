@@ -28,7 +28,7 @@ const EdgeConnected = ({ edge }) => (
   </div>
 );
 
-function Ribbon({ribbonWidth, nodes, setNodes, selected, setSelected, edges}) {
+function Ribbon({ribbonWidth, nodes, setNodes, selected, setSelected, edges, setSideToChange, sideToChange}) {
 
   const inputChange = (e, attribute) => {
     selected.element[attribute] = e.target.value;
@@ -61,6 +61,22 @@ function Ribbon({ribbonWidth, nodes, setNodes, selected, setSelected, edges}) {
             <div className={"section-row"}>Street selected</div>
             <SectionRow label={"name"} type={"text"} value={selected.element.name} onChange={e => {inputChange(e, "name")}} />
             <SectionRow label={"id"} type={"text"} value={selected.element.id} onChange={e => {inputChange(e, "id")}} />
+
+            <div className="section-row">
+              <div className="section-row-item">start:</div>
+              <div className="section-row-item">{selected.element.start.name}</div>
+              <button className="section-row-button" onClick={e => setSideToChange("start")} >
+                {(sideToChange === "start") ? "select node" : "change" }
+              </button>
+            </div>
+            <div className="section-row">
+              <div className="section-row-item">end:</div>
+              <div className="section-row-item">{selected.element.end.name}</div>
+              <button className="section-row-button" onClick={e => setSideToChange("end")} >
+                {(sideToChange === "end") ? "select node" : "change" }
+              </button>
+            </div>
+
           </div>
         )}
 
