@@ -68,14 +68,14 @@
     margin-top: 10px;
 }
 .blue-background {
-    background: #213547;
+    background: #142238;
 }
 .center {
     text-align: center;
 }
 .font-size-2 {
-    font-size: 16px;
-    padding: 5px 5px;
+    font-size: 14px;
+    padding: 5px;
 }
 .section-row-button {
     max-width: 50%;
@@ -89,4 +89,13 @@
     color: #007BFF; /* A typical clickable blue color */
     text-decoration: underline;
 }
+
+.full-width {
+    width: 100%;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
 

@@ -14,6 +14,11 @@ const nodeColor = "#7d7f82";
 export const startColor = "#32552a"; // Cyan
 export const endColor = "#222f39";  // Yellow
 
+let nodeIdSequence = 10;
+let edgeIdSequence = 10;
+export const getNextNodeId = () => nodeIdSequence++;
+export const getNextEdgeId = () => edgeIdSequence++;
+
 let nodesData= [
   new Node(1, "intersection1", 50, -50),
   new Node(2, "intersection2", 50, 100),
@@ -32,12 +37,11 @@ function App() {
   const [nodes, setNodes] = useState(nodesData);
   const [edges, setEdges] = useState(edgesData);
   const [selected, setSelected] = useState({type: null, id: null});
-  // TODO: disable side change state if disrupted with other operations
   const [sideToChange, setSideToChange] = useState(null);
 
   useEffect(() => {
-    console.log("Selected was changed:", selected);
-  }, [selected]);
+    setSideToChange(null);
+  }, [selected, nodes, edges]);
 
   const handleDragMove = (e, node) => {
     node.x = Math.floor(e.target.x());

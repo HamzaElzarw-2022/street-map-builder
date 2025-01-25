@@ -1,4 +1,5 @@
-import {startColor, endColor} from "./App.jsx";
+import {startColor, endColor, getNextNodeId, getNextEdgeId} from "./App.jsx";
+import {useState} from "react";
 
 // TODO: refactor ribbon components
 const SectionRow = ({ label, type, value, onChange }) => (
@@ -13,6 +14,7 @@ const SectionRow = ({ label, type, value, onChange }) => (
   </div>
 );
 
+// TODO: no need for separate component
 const EdgeConnected = ({ edge, setSelected }) => (
   <div className="ribbon-subsection">
     <div className="section-row">
@@ -31,6 +33,8 @@ const EdgeConnected = ({ edge, setSelected }) => (
 );
 
 function Ribbon({ribbonWidth, nodes, setNodes, selected, setSelected, edges, setEdges, setSideToChange, sideToChange}) {
+
+  const [newNode, setNewNode] = useState({name: "", x: 0, y: 0});
 
   /**
    * @param {MouseEvent} e
@@ -57,8 +61,36 @@ function Ribbon({ribbonWidth, nodes, setNodes, selected, setSelected, edges, set
     }
   }
 
+  const createNode = () => {
+    if (newNode.name) {
+      const id = getNextNodeId();
+      setNodes(prev => [...prev, {id: id, ...newNode}]);
+      setSelected({type: "NODE", id: id});
+      setNewNode({name: "", x: 0, y: 0});
+    }
+  }
+
   return (
       <div className={"ribbon standard-font"} style={{width: ribbonWidth}}>
+
+        {(selected.type === "ADD NODE")?
+          <div className={"ribbon-section blue-background"}>
+            <div className={"section-row"}>new intersection</div>
+            <SectionRow label={"name"} type={"text"} value={newNode.name || ""}
+                        onChange={e => setNewNode({...newNode, name: e.target.value})}/>
+            <SectionRow label={"lat"} type={"number"} value={newNode.x || ""}
+                        onChange={e => setNewNode({...newNode, x: parseInt(e.target.value) || 0})}/>
+            <SectionRow label={"long"} type={"number"} value={newNode.y || ""}
+                        onChange={e => setNewNode({...newNode, y: parseInt(e.target.value) || 0})}/>
+            <button className={"pointer center full-width"} onClick={createNode}>Create Intersection</button>
+          </div>
+          : <div className={"pointer ribbon-section blue-background center font-size-2"} onClick={() => {
+            setSelected({type: "ADD NODE", id: null});
+            setNewNode({name: "", x: 0, y: 0});
+          }}>add intersection</div>
+        }
+
+
         {(selected.type === "NODE") && nodes.filter(node => node.id === selected.id).map(node =>
           <div className={"ribbon-section"}>
             <div className={"section-row"}>Intersection selected</div>
@@ -112,8 +144,6 @@ function Ribbon({ribbonWidth, nodes, setNodes, selected, setSelected, edges, set
         {(!selected.type) && (
           <div className={"ribbon-section center"}>Select a node or edge to see details</div>
         )}
-        {/*TODO: add add new intersection functionality*/}
-        <div className={"ribbon-section blue-background center font-size-2"}>Add new intersection</div>
       </div>
   )
 }
