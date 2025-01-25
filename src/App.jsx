@@ -34,6 +34,7 @@ let edgesData= [
 function App() {
 
   const [stagePos, setStagePos] = useState({ x: (window.innerWidth/2)+ribbonWidth/2, y: window.innerHeight/2 });
+  const [scale, setScale] = useState(1);
   const [nodes, setNodes] = useState(nodesData);
   const [edges, setEdges] = useState(edgesData);
   const [selected, setSelected] = useState({type: null, id: null});
@@ -79,9 +80,8 @@ function App() {
           width={window.innerWidth}
           height={window.innerHeight}
           draggable
-          // TODO: add zoom in and out functionality
-          scaleX={1}
-          scaleY={1}
+          scaleX={scale}
+          scaleY={scale}
           onDragEnd={e => {
             setStagePos(e.currentTarget.position());
           }}>
@@ -142,6 +142,13 @@ function App() {
         setSideToChange={setSideToChange}
         sideToChange={sideToChange}
       />
+      <div className={"select-none fixed text-3xl right-5 bottom-5 border border-neutral-700 bg-neutral-950 flex rounded-2xl w-24 h-10"}>
+        <div className={"w-12 h-full text-center hover:bg-gray-600 rounded-l-2xl cursor-pointer"}
+             onClick={() => setScale(prev => prev+0.1)}>+</div>
+        <div className={"h-7 pb-2 border-r text-center border-neutral-700 mt-1.5"}></div>
+        <div  className={"w-12 h-full text-center hover:bg-gray-600 rounded-r-2xl cursor-pointer"}
+              onClick={() => setScale(prev => prev-0.1)}>-</div>
+      </div>
     </>
   );
 }
