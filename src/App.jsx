@@ -72,7 +72,7 @@ function App() {
   
   return (
     <>
-      <div className={"container"}>
+      <div className={"bg-zinc-950"}>
         <Stage
           x={stagePos.x}
           y={stagePos.y}
