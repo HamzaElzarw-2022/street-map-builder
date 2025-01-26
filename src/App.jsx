@@ -46,7 +46,6 @@ function App() {
   const [edges, setEdges] = useState(edgesData); //TODO: check for invalid edges
 
   //TODO: differentiate selected and status
-
   const [selected, setSelected] = useState(/** @type {Selection} */{type: null, id: null});
   const [reference, setReference] = useState(/** @type {Selection} */{type: null, id: null});
   const [pendingRef, setPendingRef] = useState("NONE");
@@ -96,7 +95,7 @@ function App() {
   return (
     <>
       <div className={"bg-zinc-950"}>
-        <Stage
+        <Stage //TODO: implementing hovering over element effect and cursor change
           x={stagePos.x}
           y={stagePos.y}
           width={window.innerWidth}
@@ -109,7 +108,7 @@ function App() {
           }}>
 
           {/* background grid layer */}
-          <Grid stagePos={stagePos} deselectCurrent={setSelected({type: null, id: null})}/>
+          <Grid stagePos={stagePos} deselectCurrent={() => setSelected({type: null, id: null})}/>
 
           {/* map elements layer */}
           <Layer>

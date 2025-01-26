@@ -43,9 +43,8 @@ const EdgeConnected = ({ edge, setSelected }) => (
 function Ribbon({ribbonWidth, nodes, setNodes, selected, setSelected, edges, setEdges,
                    pendingRef, setPendingRef, equalsPendingRef, reference}) {
 
-  // TODO: change to Node type
-  const [newNode, setNewNode] = useState({name: "", x: 0, y: 0});
-  const [newEdge, setNewEdge] = useState(null);
+  const [newNode, setNewNode] = useState(/** @type {Node} */null);
+  const [newEdge, setNewEdge] = useState(/** @type {Edge} */null);
 
   useEffect(() => {
     if(reference.type === "EDGE") return;
@@ -86,21 +85,30 @@ function Ribbon({ribbonWidth, nodes, setNodes, selected, setSelected, edges, set
   }
 
   const createNode = () => {
-    if (newNode.name) {
-      const id = getNextNodeId();
-      setNodes(prev => [...prev, {id: id, ...newNode}]);
-      setSelected({type: "NODE", id: id});
-      setNewNode({name: "", x: 0, y: 0});
+    if (!(newNode instanceof Node)) {
+      console.log("newNode is not a Node, can not create");
+      return;
     }
+
+    setNodes(prev => [...prev, newNode]);
+    setSelected({type: "NODE", id: newNode.id});
+    setNewNode(null);
+
+    //TODO: validate node enteries
   }
 
   const createEdge = () => {
-    const id = getNextEdgeId();
-    setEdges(prev => [...prev, new Edge(id, newEdge.name, newEdge.start, newEdge.end)]);
-    setSelected({...selected, type: "NODE"});
-    setNewEdge({name: "", start: -1, end: -1});
+    if (!(newEdge instanceof Edge)) {
+      console.log("newEdge is not an edge, can not create");
+      return
+    }
 
-    //TODO: validate start and end can be the same
+    setEdges(prev => [...prev, newEdge]);
+    setSelected({...selected, type: "NODE"}); //it changes ADD EDGE to NODE remove after implementing status
+    setNewEdge(null);
+
+    //TODO: validate Edge enteries
+    //TODO: implement alert, error UI
   }
 
   return (
@@ -109,19 +117,16 @@ function Ribbon({ribbonWidth, nodes, setNodes, selected, setSelected, edges, set
       {(selected.type === "ADD NODE")?
         <div className={"bg-gray-900 m-2.5 p-2.5 border-1 rounded-xl border-neutral-700"}>
           <div>new intersection</div>
-          <SectionRow label={"name"} type={"text"} value={newNode.name || ""}
-                      onChange={e => setNewNode({...newNode, name: e.target.value})}/>
-          <SectionRow label={"lat"} type={"number"} value={newNode.x || ""}
-                      onChange={e => setNewNode({...newNode, x: parseInt(e.target.value) || 0})}/>
-          <SectionRow label={"long"} type={"number"} value={newNode.y || ""}
-                      onChange={e => setNewNode({...newNode, y: parseInt(e.target.value) || 0})}/>
+          <SectionRow label={"name"} type={"text"} value={newNode.name} onChange={e => {setNewNode(newNode.setName(e.target.value))}}/>
+          <SectionRow label={"lat"} type={"number"} value={newNode.x} onChange={e => {setNewNode(newNode.setX(e.target.value))}}/>
+          <SectionRow label={"long"} type={"number"} value={newNode.y} onChange={e => {setNewNode(newNode.setY(e.target.value))}}/>
           <button className={"mt-2 cursor-pointer text-center w-full bg-gray-500 rounded-sm h-7"} onClick={createNode}>Create Intersection</button>
-        </div>
+        </div> //TODO: implement selecting x and y directly by clicking on canvas
       :
         <div className={"cursor-pointer m-2.5 p-1 border-1 rounded-xl border-neutral-700 bg-gray-900 text-center"}
           onClick={() => {
             setSelected({type: "ADD NODE", id: null});
-            setNewNode({name: "", x: 0, y: 0});
+            setNewNode(new Node(getNextNodeId(), "", 0, 0));
           }}>
           add intersection
         </div>
@@ -156,7 +161,7 @@ function Ribbon({ribbonWidth, nodes, setNodes, selected, setSelected, edges, set
               </div>
 
               <button className={"mt-2 cursor-pointer text-center w-full bg-gray-500 rounded-sm h-7"} onClick={createEdge}>Create Street</button>
-            </div>
+            </div> //TODO: implement faster edge creation just after entering end point
           :
             <div className={"cursor-pointer border-1 rounded-xl border-neutral-700 mt-2.5 bg-gray-900 text-center p-1"}
               onClick={() => {

@@ -1,6 +1,5 @@
 class Node {
 
-
   /**
    * @param {number} id - The unique identifier for the node.
    * @param {string} name - The name of the node.
@@ -12,6 +11,18 @@ class Node {
     this.name = name;
     this.x = x;
     this.y = y;
+  }
+  setName(name) {
+    this.name = name;
+    return new Node(this.id, name, this.x, this.y);
+  }
+  setX(x) {
+    this.x = x;
+    return new Node(this.id, this.name, x, this.y);
+  }
+  setY(y) {
+    this.y = y;
+    return new Node(this.id, this.name, this.x, y);
   }
 }
 
