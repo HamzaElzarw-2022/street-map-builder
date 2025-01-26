@@ -31,45 +31,67 @@ let edgesData= [
   new Edge(3, "Cadde 4", nodesData[1], nodesData[3])
 ]
 
+/**
+ * @typedef {Object} Selection
+ * @property {string|null} type - The type of the selected item.
+ * @property {number|null} id - The ID of the selected item.
+ */
+
 function App() {
 
   const [stagePos, setStagePos] = useState({ x: (window.innerWidth/2)+ribbonWidth/2, y: window.innerHeight/2 });
   const [scale, setScale] = useState(1);
+
   const [nodes, setNodes] = useState(nodesData);
-  const [edges, setEdges] = useState(edgesData);
-  const [selected, setSelected] = useState({type: null, id: null});
-  const [sideToChange, setSideToChange] = useState(null);
+  const [edges, setEdges] = useState(edgesData); //TODO: check for invalid edges
+
+  //TODO: differentiate selected and status
+
+  const [selected, setSelected] = useState(/** @type {Selection} */{type: null, id: null});
+  const [reference, setReference] = useState(/** @type {Selection} */{type: null, id: null});
+  const [pendingRef, setPendingRef] = useState("NONE");
 
   useEffect(() => {
-    setSideToChange(null);
+    setPendingRef("NONE");
+    setReference({type: null, id: null});
   }, [selected, nodes, edges]);
 
+  /**
+   * Handles dragging intersections from canvas and updates nodes position
+   * @param {KonvaEventObject} e
+   * @param {Node} node
+   */
   const handleDragMove = (e, node) => {
     node.x = Math.floor(e.target.x());
     node.y = Math.floor(e.target.y());
     setNodes((prev) => [...prev]);
   };
 
-  const selectElement = (type, element) => {
-
-    //use selected as reference
-    if (sideToChange !== null && type === "NODE" && selected.type === "EDGE") {
-      setEdges((prev) => prev.map(edge => {
-        if(edge.id === selected.id)
-          edge[sideToChange] = element;
-        return edge;
-      }));
+  /**
+   * checks if parameter string is the pendingRef value, if yes it returns true and reset pendingRef to NONE.
+   * @param {string} pending
+   * @returns {boolean}
+   */
+  const equalsPendingRef = (pending) => {
+    if(pendingRef === pending) {
+      setPendingRef("NONE");
+      return true;
     }
-    else {
-      setSelected({type, id: element.id});
-    }
-    setSideToChange(null);
-  };
-
-  const deselectCurrent = () => {
-    setSideToChange(null);
-    setSelected({type: null, id: null});
+    return false;
   }
+
+  /**
+   * Handles element clicked event from the canvas
+   * @param {String} type type of the clicked element
+   * @param {Node|Edge} element
+   */
+  const elementClicked = (type, element) => {
+    if(pendingRef !== "NONE"){
+      setReference({type, id: element.id});
+    }
+    else
+      setSelected({type, id: element.id});
+  };
   
   return (
     <>
@@ -87,7 +109,7 @@ function App() {
           }}>
 
           {/* background grid layer */}
-          <Grid stagePos={stagePos} deselectCurrent={deselectCurrent}/>
+          <Grid stagePos={stagePos} deselectCurrent={setSelected({type: null, id: null})}/>
 
           {/* map elements layer */}
           <Layer>
@@ -97,7 +119,7 @@ function App() {
                 stroke={edgeColor}
                 strokeWidth={thick * 2}
                 key={edge.id}
-                onClick={() => selectElement("EDGE", edge)}
+                onClick={() => elementClicked("EDGE", edge)}
               />))
             }
 
@@ -109,8 +131,8 @@ function App() {
                 key={node.id}
                 draggable
                 onDragMove={e => handleDragMove(e, node)}
-                onClick={() => selectElement("NODE", node)}
-                onDragStart={() => selectElement("NODE", node)}
+                onClick={() => elementClicked("NODE", node)}
+                onDragStart={() => elementClicked("NODE", node)}
               />))
             }
           </Layer>
@@ -139,8 +161,11 @@ function App() {
         setSelected={setSelected}
         edges={edges}
         setEdges={setEdges}
-        setSideToChange={setSideToChange}
-        sideToChange={sideToChange}
+
+        setPendingRef={setPendingRef}
+        equalsPendingRef={equalsPendingRef}
+        pendingRef={pendingRef}
+        reference={reference}
       />
       <div className={"select-none fixed text-3xl right-5 bottom-5 border border-neutral-700 bg-neutral-950 flex rounded-2xl w-24 h-10"}>
         <div className={"w-12 h-full text-center hover:bg-gray-600 rounded-l-2xl cursor-pointer"}

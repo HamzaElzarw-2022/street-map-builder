@@ -34,7 +34,7 @@ function Grid({stagePos, deselectCurrent}){
     }
   }
   return (
-    <Layer onClick={deselectCurrent}>
+    <Layer onClick={deselectCurrent} >
       <Circle x={0} y={0} radius={2} fill="grey" />
       <Text text="0,0" x={2} y={2} fill="#2B2D30" fontSize={10} />
       {gridComponents}

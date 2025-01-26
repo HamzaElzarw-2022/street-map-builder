@@ -13,6 +13,18 @@ class Edge {
     this.start = start;
     this.end = end;
   }
+  setName(name) {
+    this.name = name;
+    return new Edge(this.id, name, this.start, this.end);
+  }
+  setStart(start) {
+    this.start = start;
+    return new Edge(this.id, this.name, start, this.end);
+  }
+  setEnd(end) {
+    this.end = end;
+    return new Edge(this.id, this.name, this.start, end);
+  }
 }
 
 export default Edge;
