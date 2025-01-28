@@ -2,7 +2,7 @@ import PropertyInputField from "./PropertyInputField.jsx";
 import Node from "../../models/Node.js";
 import {useEffect, useState} from "react";
 import Edge from "../../models/Edge.js";
-import {getNextEdgeId} from "../../App.jsx";
+import { getNextEdgeId } from "../../data/mockData.js";
 
 function EdgeForm({nodes, node=null, setEdges, setSelected, pendingRef, setPendingRef, equalsPendingRef, reference}) {
 

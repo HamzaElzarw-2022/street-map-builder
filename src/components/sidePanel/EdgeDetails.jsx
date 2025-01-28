@@ -1,4 +1,4 @@
-import {endColor, startColor} from "../../App.jsx";
+import {endColor, startColor} from "../../data/constants.js";
 import {useEffect} from "react";
 import PropertyInputField from "./PropertyInputField.jsx";
 

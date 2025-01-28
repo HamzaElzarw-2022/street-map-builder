@@ -1,7 +1,7 @@
 import PropertyInputField from "./PropertyInputField.jsx";
 import {useState} from "react";
 import Node from "../../models/Node.js";
-import {getNextNodeId} from "../../App.jsx";
+import { getNextNodeId } from "../../data/mockData.js";
 
 function NodeForm({ setNodes, setSelected }) {
 
