@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import './App.css'
 import Grid from './Grid.jsx'
-import Ribbon from './Ribbon.jsx'
+import SidePanel from './components/sidePanel/SidePanel.jsx'
 import { Stage, Layer, Circle, Line } from 'react-konva';
 import Node from './models/Node.js'
 import Edge from './models/Edge.js'
@@ -152,7 +152,7 @@ function App() {
 
         </Stage>
       </div>
-      <Ribbon
+      <SidePanel
         ribbonWidth={ribbonWidth}
         nodes={nodes}
         setNodes={setNodes}
