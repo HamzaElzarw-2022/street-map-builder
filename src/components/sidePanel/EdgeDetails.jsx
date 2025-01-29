@@ -43,7 +43,7 @@ function EdgeDetails({nodes, edge, setEdges, selected, setSelected, equalsPendin
         <div className="flex-auto basis-2/3 flex items-center max-w-2/3 pl-1.5">
           <div className="flex-auto cursor-pointer text-blue-400 underline mr-2.5" onClick={() => setSelected({type: "NODE", id: edge.start.id})}>{edge.start.name}</div>
           <button className="pr-1 pl-1 cursor-pointer text-center bg-gray-500 rounded-sm" onClick={() => setPendingRef("start")} >
-            {(pendingRef==="start") ? "waiting selection" : "select" }
+            {(pendingRef==="start") ? "waiting selection" : "update" }
           </button>
         </div>
       </div>
@@ -55,7 +55,7 @@ function EdgeDetails({nodes, edge, setEdges, selected, setSelected, equalsPendin
         <div className="flex-auto basis-2/3 flex items-center max-w-2/3 pl-1.5">
           <div className="flex-auto cursor-pointer text-blue-400 underline mr-2.5" onClick={() => setSelected({type: "NODE", id: edge.end.id})}>{edge.end.name}</div>
           <button className="pr-1 pl-1 cursor-pointer text-center bg-gray-500 rounded-sm" onClick={() => setPendingRef("end")} >
-            {(pendingRef==="end") ? "waiting selection" : "select" }
+            {(pendingRef==="end") ? "waiting selection" : "update" }
           </button>
         </div>
       </div>

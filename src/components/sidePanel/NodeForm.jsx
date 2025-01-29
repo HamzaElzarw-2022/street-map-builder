@@ -1,19 +1,25 @@
 import PropertyInputField from "./PropertyInputField.jsx";
 import {useState} from "react";
 import Node from "../../models/Node.js";
-import { getNextNodeId } from "../../data/mockData.js";
+import {getNextMessageId, getNextNodeId} from "../../data/mockData.js";
 
-function NodeForm({ setNodes, setSelected }) {
+function NodeForm({ setNodes, setSelected, setMessages }) {
 
   const [newNode, setNewNode] = useState(new Node(getNextNodeId(), "", 0, 0));
 
   const createNode = () => {
     if (!(newNode instanceof Node)) {
       console.log("newNode is not a Node, can not create");
-      return;
+    } else if(isNaN(newNode.x)) {
+      setMessages(prev => [...prev, { id: getNextMessageId(), type: "error", text: "lat can not be empty!" }]);
+    } else if(isNaN(newNode.y)) {
+      setMessages(prev => [...prev, { id: getNextMessageId(), type: "error", text: "long can not be empty!" }]);
+    } else {
+      newNode.name = (newNode.name === "")? "intersection_"+newNode.id : newNode.name;
+      setNodes(prev => [...prev, newNode]);
+      setSelected({type: "NODE", id: newNode.id});
     }
-    setNodes(prev => [...prev, newNode]);
-    setSelected({type: "NODE", id: newNode.id});
+
     //TODO: validate node entries
   }
 

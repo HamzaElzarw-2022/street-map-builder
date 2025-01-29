@@ -3,8 +3,10 @@ import Edge from "../models/Edge.js";
 
 let nodeIdSequence = 10;
 let edgeIdSequence = 10;
+let messageIdSequence = 0;
 export const getNextNodeId = () => nodeIdSequence++;
 export const getNextEdgeId = () => edgeIdSequence++;
+export const getNextMessageId = () => messageIdSequence++;
 
 export const nodesData= [
   new Node(1, "intersection1", 50, -50),

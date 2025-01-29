@@ -13,16 +13,13 @@ class Node {
     this.y = y;
   }
   setName(name) {
-    this.name = name;
     return new Node(this.id, name, this.x, this.y);
   }
   setX(x) {
-    this.x = x;
-    return new Node(this.id, this.name, x, this.y);
+    return new Node(this.id, this.name, parseInt(x, 10), this.y);
   }
   setY(y) {
-    this.y = y;
-    return new Node(this.id, this.name, this.x, y);
+    return new Node(this.id, this.name, this.x, parseInt(y, 10));
   }
 }
 

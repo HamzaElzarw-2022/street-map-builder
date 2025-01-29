@@ -24,7 +24,7 @@ const Message = ({ id, type, text, onClose }) => {
   );
 };
 
-const MessageContainer = ({ width, messages, duration = 2000 }) => {
+const MessageContainer = ({ messages, duration = 2000 }) => {
   const [activeMessages, setActiveMessages] = useState(messages);
 
   useEffect(() => {
@@ -46,7 +46,7 @@ const MessageContainer = ({ width, messages, duration = 2000 }) => {
   };
 
   return (
-    <div className="fixed bottom-4 left-4 space-y-3 w-full" style={{maxWidth: width-32}}>
+    <div className="fixed top-4 right-4 space-y-3 max-w-xs w-full">
       <AnimatePresence>
         {activeMessages.map((msg) => (
           <Message key={msg.id} {...msg} onClose={removeMessage} />

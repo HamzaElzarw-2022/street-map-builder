@@ -2,9 +2,9 @@ import PropertyInputField from "./PropertyInputField.jsx";
 import Node from "../../models/Node.js";
 import {useEffect, useState} from "react";
 import Edge from "../../models/Edge.js";
-import { getNextEdgeId } from "../../data/mockData.js";
+import {getNextEdgeId, getNextMessageId} from "../../data/mockData.js";
 
-function EdgeForm({nodes, node=null, setEdges, setSelected, pendingRef, setPendingRef, equalsPendingRef, reference, setMessages }) {
+function EdgeForm({nodes, node, setEdges, pendingRef, setPendingRef, equalsPendingRef, reference, setMessages }) {
 
   const [newEdge, setNewEdge] = useState(new Edge(getNextEdgeId(), "", node, null));
 
@@ -19,16 +19,14 @@ function EdgeForm({nodes, node=null, setEdges, setSelected, pendingRef, setPendi
   const createEdge = () => {
     if (!(newEdge instanceof Edge)) {
       console.log("newEdge is not an edge, can not create");
-      return;
+      setMessages(prev => [...prev, { id: getNextMessageId(), type: "error", text: "an error occurred!" }]);
     } else if(!newEdge.end) {
-      setMessages(prev => [...prev, { id: 5, type: "error", text: "select end intersection before creating!" }]);
-      return;
+      setMessages(prev => [...prev, { id: getNextMessageId(), type: "error", text: "select end intersection before creating!" }]);
+    } else {
+      newEdge.name = (newEdge.name === "")? "street_"+newEdge.id : newEdge.name;
+      setEdges(prev => [...prev, newEdge]);
     }
 
-    setEdges(prev => [...prev, newEdge]);
-    setSelected(prev => ({...prev, type: "NODE"})); //it changes ADD EDGE to NODE remove after implementing status
-    //TODO: validate Edge enteries
-    //TODO: implement alert, error UI
   }
 
   return(
