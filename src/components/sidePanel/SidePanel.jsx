@@ -1,11 +1,11 @@
 import NodeDetails from "./NodeDetails.jsx";
 import EdgeDetails from "./EdgeDetails.jsx";
 import NodeForm from "./NodeForm.jsx";
-import {useState} from "react";
 
-function SidePanel({nodes, setNodes, selected, setSelected, edges, setEdges,
-                   pendingRef, setPendingRef, equalsPendingRef, reference}) {
-  const [panelWidth, setPanelWidth] = useState(300);
+function SidePanel({nodes, setNodes, selected, setSelected, edges, setEdges, panelWidth,
+                   pendingRef, setPendingRef, equalsPendingRef, reference, setMessages }) {
+
+  //TODO: implement resizable panel
 
   return (
     <div style={{width: panelWidth}} className={"standard-font rounded-br-2xl rounded-tr-2xl border-r-1 border-r-neutral-700 h-full fixed top-0 left-0 bg-neutral-950 overflow-x-hidden overflow-y-auto"}>
@@ -20,7 +20,7 @@ function SidePanel({nodes, setNodes, selected, setSelected, edges, setEdges,
       {(selected.type === "NODE" || selected.type === "ADD EDGE") &&
         <NodeDetails node={nodes.filter(node => node.id === selected.id)[0]} nodes={nodes} setNodes={setNodes} edges={edges} setEdges={setEdges}
                      setSelected={setSelected} selected={selected} pendingRef={pendingRef} setPendingRef={setPendingRef}
-                     equalsPendingRef={equalsPendingRef} reference={reference}/>}
+                     equalsPendingRef={equalsPendingRef} reference={reference} setMessages={setMessages} />}
 
       {(selected.type === "EDGE") &&
         <EdgeDetails edge={edges.filter(edge => edge.id === selected.id)[0]} nodes={nodes} setEdges={setEdges}

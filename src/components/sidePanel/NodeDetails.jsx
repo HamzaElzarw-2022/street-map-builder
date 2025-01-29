@@ -2,7 +2,7 @@ import PropertyInputField from "./PropertyInputField.jsx";
 import NodeEdges from "./NodeEdges.jsx";
 import EdgeForm from "./EdgeForm.jsx";
 
-function NodeDetails({ node, nodes, setNodes, edges, setEdges, setSelected, selected, pendingRef, setPendingRef, equalsPendingRef, reference }) {
+function NodeDetails({ node, nodes, setNodes, edges, setEdges, setSelected, selected, pendingRef, setPendingRef, equalsPendingRef, reference, setMessages }) {
 
   /**
    * @param {MouseEvent} e
@@ -33,7 +33,7 @@ function NodeDetails({ node, nodes, setNodes, edges, setEdges, setSelected, sele
       {(selected.type === "ADD EDGE")?
         <EdgeForm nodes={nodes} node={node} setEdges={setEdges} setSelected={setSelected}
                   pendingRef={pendingRef} setPendingRef={setPendingRef}
-                  equalsPendingRef={equalsPendingRef} reference={reference}/>
+                  equalsPendingRef={equalsPendingRef} reference={reference} setMessages={setMessages}/>
         :
         <div className={"cursor-pointer border-1 rounded-xl border-neutral-700 mt-2.5 bg-gray-900 text-center p-1"}
              onClick={() => setSelected({...selected, type: "ADD EDGE"})}>

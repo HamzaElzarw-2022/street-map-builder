@@ -4,7 +4,7 @@ import {useEffect, useState} from "react";
 import Edge from "../../models/Edge.js";
 import { getNextEdgeId } from "../../data/mockData.js";
 
-function EdgeForm({nodes, node=null, setEdges, setSelected, pendingRef, setPendingRef, equalsPendingRef, reference}) {
+function EdgeForm({nodes, node=null, setEdges, setSelected, pendingRef, setPendingRef, equalsPendingRef, reference, setMessages }) {
 
   const [newEdge, setNewEdge] = useState(new Edge(getNextEdgeId(), "", node, null));
 
@@ -20,7 +20,11 @@ function EdgeForm({nodes, node=null, setEdges, setSelected, pendingRef, setPendi
     if (!(newEdge instanceof Edge)) {
       console.log("newEdge is not an edge, can not create");
       return;
+    } else if(!newEdge.end) {
+      setMessages(prev => [...prev, { id: 5, type: "error", text: "select end intersection before creating!" }]);
+      return;
     }
+
     setEdges(prev => [...prev, newEdge]);
     setSelected(prev => ({...prev, type: "NODE"})); //it changes ADD EDGE to NODE remove after implementing status
     //TODO: validate Edge enteries
