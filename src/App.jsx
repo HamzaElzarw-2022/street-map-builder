@@ -63,6 +63,7 @@ function App() {
       />
       <SidePanel
         panelWidth={panelWidth}
+        setPanelWidth={setPanelWidth}
         nodes={nodes}
         setNodes={setNodes}
         selected={selected}

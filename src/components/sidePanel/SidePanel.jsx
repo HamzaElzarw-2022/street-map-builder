@@ -4,10 +4,24 @@ import NodeForm from "./NodeForm.jsx";
 import EdgeForm from "./EdgeForm.jsx";
 import NodeEdges from "./NodeEdges.jsx";
 
-function SidePanel({nodes, setNodes, selected, setSelected, edges, setEdges, panelWidth,
+function SidePanel({nodes, setNodes, selected, setSelected, edges, setEdges, panelWidth, setPanelWidth,
                    pendingRef, setPendingRef, equalsPendingRef, reference, setMessages }) {
 
-  //TODO: implement resizable panel
+  const handleMouseDown = (e) => {
+    e.preventDefault();
+    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseup', handleMouseUp);
+  };
+  const handleMouseMove = (e) => {
+    const minWidth = 200;  // Minimum panel width
+    const maxWidth = 800;  // Maximum panel width
+    const newWidth = Math.min(Math.max(e.clientX, minWidth), maxWidth);
+    setPanelWidth(newWidth);
+  };
+  const handleMouseUp = () => {
+    document.removeEventListener('mousemove', handleMouseMove);
+    document.removeEventListener('mouseup', handleMouseUp);
+  };
 
   return (
     <div style={{width: panelWidth}} className={"standard-font rounded-br-2xl rounded-tr-2xl border-r-1 border-r-neutral-700 h-full fixed top-0 left-0 bg-neutral-950 overflow-x-hidden overflow-y-auto"}>
@@ -52,6 +66,9 @@ function SidePanel({nodes, setNodes, selected, setSelected, edges, setEdges, pan
 
       {(!selected.type) &&
         <div className={"m-2.5 p-2.5 border-1 rounded-xl border-neutral-700 text-center"}>Select a node or edge to see details</div>}
+
+      {/* Resize Handle */}
+      <div className="absolute right-0 top-0 bottom-0 w-1 cursor-ew-resize z-10 hover:bg-blue-500 transition-colors" onMouseDown={handleMouseDown}/>
     </div>
   )
 }

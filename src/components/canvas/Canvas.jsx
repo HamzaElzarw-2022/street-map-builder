@@ -30,6 +30,15 @@ function Canvas({ scale, nodes, setNodes, edges, selected, setSelected, pendingR
     else
       setSelected({type, id: element.id});
   };
+  /**
+   * @param {KonvaEventObject<MouseEvent>} e
+   */
+  const gridClicked = (e) => {
+    if(pendingRef === "COORDINATE")
+      setReference({type: "COORDINATE", id: {x: e.target.x, y: e.target.y}});
+    else
+      setSelected({type: null, id: null})
+  }
 
   return(
     <div className={"bg-zinc-950"}>
@@ -46,10 +55,10 @@ function Canvas({ scale, nodes, setNodes, edges, selected, setSelected, pendingR
         }}>
 
         {/* background grid layer */}
-        <Grid stagePos={stagePos} deselectCurrent={() => setSelected({type: null, id: null})}/>
+        <Grid stagePos={stagePos} onClick={e => gridClicked(e)}/>
 
         {/* map elements layer */}
-        <Layer>
+        <Layer >
           {edges.map(edge => (
             <Line
               points={[edge.start.x, edge.start.y, edge.end.x, edge.end.y]}

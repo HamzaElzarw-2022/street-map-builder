@@ -22,6 +22,8 @@ function EdgeForm({nodes, node, setEdges, pendingRef, setPendingRef, equalsPendi
       setMessages(prev => [...prev, { id: getNextMessageId(), type: "error", text: "an error occurred!" }]);
     } else if(!newEdge.end) {
       setMessages(prev => [...prev, { id: getNextMessageId(), type: "error", text: "select end intersection before creating!" }]);
+    } else if(newEdge.end.id === newEdge.start.id) {
+      setMessages(prev => [...prev, { id: getNextMessageId(), type: "error", text: "end and start can't be the same!" }]);
     } else {
       newEdge.name = (newEdge.name === "")? "street_"+newEdge.id : newEdge.name;
       setEdges(prev => [...prev, newEdge]);
