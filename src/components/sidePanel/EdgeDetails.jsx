@@ -30,7 +30,7 @@ function EdgeDetails({nodes, edge, setEdges, selected, setSelected, equalsPendin
   }
 
   return (
-    <div className={"m-2.5 p-2.5 border-1 rounded-xl border-neutral-700"}>
+    <div className={"m-2.5 p-2.5 border-1 rounded-md border-neutral-700"}>
       <div>Street selected</div>
       <PropertyInputField label={"id"} type={"text"} value={edge.id} disable />
       <PropertyInputField label={"name"} type={"text"} value={edge.name} onChange={e => {inputChange(e, "name")}} />
@@ -42,7 +42,7 @@ function EdgeDetails({nodes, edge, setEdges, selected, setSelected, equalsPendin
         </div>
         <div className="flex-auto basis-2/3 flex items-center max-w-2/3 pl-1.5">
           <div className="flex-auto cursor-pointer text-blue-400 underline mr-2.5" onClick={() => setSelected({type: "NODE", id: edge.start.id})}>{edge.start.name}</div>
-          <button className="pr-1 pl-1 cursor-pointer text-center bg-gray-500 rounded-sm" onClick={() => setPendingRef("start")} >
+          <button className="px-2 cursor-pointer text-center bg-blue-950 hover:bg-indigo-900 rounded-sm" onClick={() => setPendingRef("start")} >
             {(pendingRef==="start") ? "waiting selection" : "update" }
           </button>
         </div>
@@ -54,7 +54,7 @@ function EdgeDetails({nodes, edge, setEdges, selected, setSelected, equalsPendin
         </div>
         <div className="flex-auto basis-2/3 flex items-center max-w-2/3 pl-1.5">
           <div className="flex-auto cursor-pointer text-blue-400 underline mr-2.5" onClick={() => setSelected({type: "NODE", id: edge.end.id})}>{edge.end.name}</div>
-          <button className="pr-1 pl-1 cursor-pointer text-center bg-gray-500 rounded-sm" onClick={() => setPendingRef("end")} >
+          <button className="px-2 cursor-pointer text-center bg-blue-950 hover:bg-indigo-900 rounded-sm" onClick={() => setPendingRef("end")} >
             {(pendingRef==="end") ? "waiting selection" : "update" }
           </button>
         </div>

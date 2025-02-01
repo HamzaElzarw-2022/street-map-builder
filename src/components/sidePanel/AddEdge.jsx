@@ -1,24 +1,28 @@
-import PropertyInputField from "./PropertyInputField.jsx";
 import Node from "../../models/Node.js";
 import {useEffect, useState} from "react";
 import Edge from "../../models/Edge.js";
 import {getNextEdgeId, getNextMessageId, getNextNodeId} from "../../data/mockData.js";
+import { X, Plus } from "lucide-react";
 
-function AddEdge({nodes, node, setEdges, setNodes, pendingRef, setPendingRef, equalsPendingRef, reference, setMessages }) {
+function AddEdge({ nodes, node, setEdges, setNodes, setPendingRef, equalsPendingRef, reference, setMessages }) {
 
-  const [pendingCOORDINATE, setPendingCOORDINATE] = useState(false);
+  const [selecting, setSelecting] = useState(false);
 
   useEffect(() => {
 
-    if(equalsPendingRef("connectWith") && reference.type === "NODE") {
+    if(selecting && equalsPendingRef("connectWith") && reference.type === "NODE") {
+      if(reference.id === node.id) {
+        setMessages(prev => [...prev, { id: getNextMessageId(), type: "error", text: "Selected node cannot be same!" }]);
+        return;
+      }
       const otherNode = nodes.filter(node => node.id === reference.id)[0];
       const nextEdgeId = getNextEdgeId();
       const newEdge = new Edge(nextEdgeId, "connection_"+nextEdgeId, node, otherNode);
 
       setEdges(prev => [...prev, newEdge]);
-    } else if(pendingCOORDINATE && equalsPendingRef("COORDINATE")) {
+    } else if(selecting && equalsPendingRef("COORDINATE")) {
 
-      const coordinates = reference.id;
+      const coordinates = reference.id; //TODO: update reference (id to be generalized)
       const nextNodeId = getNextNodeId();
       const otherNode = new Node(nextNodeId, "intersection_"+nextNodeId, coordinates.x, coordinates.y);
       setNodes(prev => [...prev, otherNode]);
@@ -26,25 +30,44 @@ function AddEdge({nodes, node, setEdges, setNodes, pendingRef, setPendingRef, eq
       const nextEdgeId = getNextEdgeId();
       const newEdge = new Edge(nextEdgeId, "connection_"+nextEdgeId, node, otherNode);
       setEdges(prev => [...prev, newEdge]);
-
-      setPendingCOORDINATE(false);
     }
+    setSelecting(false);
   }, [reference]);
 
   return(
-    <div className={"flex pt-1 mt-1 items-center h-7"}>
-      <div className="flex-auto basis-2/3">Connect with:</div>
-      <button className="cursor-pointer flex-auto basis-2/3 rounded-sm pl-0.5 h-full bg-gray-500 mr-1"
-              onClick={() => setPendingRef("connectWith")}>
-        {(pendingRef==="connectWith") ? "waiting selection" : "node" }
-      </button>
-      <button className="cursor-pointer flex-auto basis-2/3 rounded-sm pl-0.5 h-full bg-gray-500"
-              onClick={() => {
-                setPendingRef("COORDINATE");
-                setPendingCOORDINATE(true);
-              }}>
-        {(pendingRef==="COORDINATE" && pendingCOORDINATE) ? "waiting selection" : "new node" }
-      </button>
+    <div className={"flex pt-1 mt-1 items-center min-h-7"}>
+      { (!selecting) ?
+        <>
+          {/*<div className="flex-auto ">Connect with:</div>*/}
+          <button className="flex gap-1 items-center justify-center cursor-pointer flex-auto rounded-sm pl-0.5 h-7 bg-blue-950 hover:bg-indigo-900 mr-1"
+                  onClick={() => {
+                    setPendingRef("connectWith");
+                    setSelecting(true);
+                  }}>
+            <Plus size={19} strokeWidth={3} />Street
+          </button>
+          <button className="flex gap-1 items-center justify-center cursor-pointer flex-auto rounded-sm pl-0.5 h-7 bg-blue-950 hover:bg-indigo-900"
+                  onClick={() => {
+                    setPendingRef("COORDINATE");
+                    setSelecting(true);
+                  }}>
+            <Plus size={19} strokeWidth={3} />Street & Intersection
+          </button>
+        </>
+         :
+        <>
+          <div className="flex items-center justify-center flex-auto rounded-sm h-7 bg-blue-950 mr-1">
+            select or point at canvas...
+          </div>
+          <div className="flex items-center cursor-pointer rounded-sm h-7 bg-red-500 px-1" onClick={() => {
+            setSelecting(false);
+            setPendingRef("NONE");
+          }}>
+            <X size={18} strokeWidth={3}/>
+          </div>
+        </>
+      }
+
     </div>
   );
 }

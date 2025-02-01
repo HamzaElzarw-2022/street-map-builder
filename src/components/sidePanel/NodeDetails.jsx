@@ -1,10 +1,6 @@
 import PropertyInputField from "./PropertyInputField.jsx";
-import {useEffect, useState} from "react";
 
 function NodeDetails({ children, node, setNodes }) {
-
-  const [addingEdge, setAddingEdge] = useState(false);
-  useEffect(() => setAddingEdge(false), [node]);
 
   /**
    * @param {MouseEvent} e
@@ -22,7 +18,7 @@ function NodeDetails({ children, node, setNodes }) {
   };
 
   return (
-    <div className={"m-2.5 p-2.5 border-1 rounded-xl border-neutral-700"}>
+    <div className={"m-2.5 p-2.5 border-1 rounded-md border-neutral-700"}>
       <div>Intersection selected</div>
       <PropertyInputField label={"id"} type={"text"} value={node.id} disable/>
       <PropertyInputField label={"name"} type={"text"} value={node.name} onChange={e => {inputChange(e, "name")}} />

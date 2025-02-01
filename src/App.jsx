@@ -31,8 +31,8 @@ function App() {
   useEffect(() => {
     if (messages.length > 0) {
       setTimeout(() => {
-        setMessages([]); // Empty the messages array after they are taken
-      }, 100); // Short delay to ensure MessageContainer picks up messages before they are cleared
+        setMessages([]);
+      }, 100);
     }
   }, [messages]);
 

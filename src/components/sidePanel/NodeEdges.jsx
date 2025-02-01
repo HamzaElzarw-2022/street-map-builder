@@ -8,7 +8,7 @@ function NodeEdges({ edges, node, setSelected }) {
 
   return(
     edges.filter(edge => (edge.start.id === node.id) || (edge.end.id === node.id)).map(edge => (
-        <div className="border-1 rounded-xl border-neutral-700 mt-2 p-2">
+        <div className="border-1 rounded-md border-neutral-700 mt-2 p-2">
           <div className="flex items-center">
             <div className="flex-auto basis-1/3">name:</div>
             <div  className="flex-auto basis-2/3 pl-1.5 max-w-2/3 cursor-pointer text-blue-400 underline margin-right-10"

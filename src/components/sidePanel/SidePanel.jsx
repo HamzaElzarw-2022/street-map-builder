@@ -4,6 +4,7 @@ import NodeEdges from "./NodeEdges.jsx";
 import {getNextNodeId} from "../../data/mockData.js";
 import Node from "../../models/Node.js";
 import AddEdge from "./AddEdge.jsx";
+import {Plus} from "lucide-react";
 
 function SidePanel({nodes, setNodes, selected, setSelected, edges, setEdges, panelWidth, setPanelWidth,
                    pendingRef, setPendingRef, equalsPendingRef, reference, setMessages, getCanvasCenter }) {
@@ -35,7 +36,12 @@ function SidePanel({nodes, setNodes, selected, setSelected, edges, setEdges, pan
 
   return (
     <div style={{width: panelWidth}} className={"standard-font rounded-br-2xl rounded-tr-2xl border-r-1 border-r-neutral-700 h-full fixed top-0 left-0 bg-neutral-950 overflow-x-hidden overflow-y-auto"}>
-      <div className={"cursor-pointer m-2.5 p-1 border-1 rounded-xl border-neutral-700 bg-gray-900 text-center"} onClick={createNode}>add intersection</div>
+      <div className={"max-w-full flex m-2.5"}>
+        <button className={"flex-auto cursor-pointer h-7 rounded-md bg-blue-950 hover:bg-indigo-900 gap-1 justify-center flex items-center"} onClick={createNode}>
+          <Plus size={19} strokeWidth={3} />add intersection
+        </button>
+      </div>
+
 
       {selected.type === "NODE" && nodes.filter(node => node.id === selected.id).map(node =>
         <NodeDetails node={node} setNodes={setNodes}>
@@ -47,7 +53,6 @@ function SidePanel({nodes, setNodes, selected, setSelected, edges, setEdges, pan
                     nodes={nodes}
                     setEdges={setEdges}
                     setNodes={setNodes}
-                    pendingRef={pendingRef}
                     setPendingRef={setPendingRef}
                     equalsPendingRef={equalsPendingRef}
                     reference={reference}
@@ -70,7 +75,7 @@ function SidePanel({nodes, setNodes, selected, setSelected, edges, setEdges, pan
       }
 
       {(!selected.type) &&
-        <div className={"m-2.5 p-2.5 border-1 rounded-xl border-neutral-700 text-center"}>Select a node or edge to see details</div>}
+        <div className={"m-2.5 p-2.5 border-1 rounded-md border-neutral-700 text-center"}>Select a node or edge to see details</div>}
 
       {/* Resize Handle */}
       <div className="absolute right-0 top-0 bottom-0 w-1 cursor-ew-resize z-10 hover:bg-blue-500 transition-colors" onMouseDown={handleMouseDown}/>
