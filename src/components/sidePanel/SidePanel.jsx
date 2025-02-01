@@ -1,7 +1,7 @@
 import NodeDetails from "./NodeDetails.jsx";
 import EdgeDetails from "./EdgeDetails.jsx";
 import NodeEdges from "./NodeEdges.jsx";
-import {getNextNodeId} from "../../data/mockData.js";
+import {getNextMessageId, getNextNodeId} from "../../data/mockData.js";
 import Node from "../../models/Node.js";
 import AddEdge from "./AddEdge.jsx";
 import {Plus} from "lucide-react";
@@ -32,6 +32,7 @@ function SidePanel({nodes, setNodes, selected, setSelected, edges, setEdges, pan
 
     setNodes(prev => [...prev, newNode]);
     setSelected({type: "NODE", id: newNode.id});
+    setMessages(prev => [...prev, { id: getNextMessageId(), type: "info", text: "Intersection added at the center. Edit its location in the side panel." }]);
   }
 
   return (
@@ -44,7 +45,7 @@ function SidePanel({nodes, setNodes, selected, setSelected, edges, setEdges, pan
 
 
       {selected.type === "NODE" && nodes.filter(node => node.id === selected.id).map(node =>
-        <NodeDetails node={node} setNodes={setNodes}>
+        <NodeDetails node={node} setNodes={setNodes} setEdges={setEdges}>
           <NodeEdges node={node}
                      edges={edges}
                      setSelected={setSelected}

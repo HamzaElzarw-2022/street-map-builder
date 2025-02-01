@@ -1,6 +1,7 @@
 import {endColor, startColor} from "../../data/constants.js";
 import {useEffect} from "react";
 import PropertyInputField from "./PropertyInputField.jsx";
+import {Trash2} from "lucide-react";
 
 function EdgeDetails({nodes, edge, setEdges, selected, setSelected, equalsPendingRef, pendingRef, setPendingRef, reference}) {
 
@@ -28,10 +29,19 @@ function EdgeDetails({nodes, edge, setEdges, selected, setSelected, equalsPendin
       return edge;
     }));
   }
+  const removeEdge = () => {
+    setSelected({type: null, id: null});
+    setEdges(prev => prev.filter(e => e.id !== edge.id ));
+  }
 
   return (
     <div className={"m-2.5 p-2.5 border-1 rounded-md border-neutral-700"}>
-      <div>Street selected</div>
+      <div className={"flex items-center"}>
+        <div className={"flex-auto"}>Street selected:</div>
+        <button className={"cursor-pointer"} onClick={removeEdge}>
+          <Trash2 size={18} color={"red"}/>
+        </button>
+      </div>
       <PropertyInputField label={"id"} type={"text"} value={edge.id} disable />
       <PropertyInputField label={"name"} type={"text"} value={edge.name} onChange={e => {inputChange(e, "name")}} />
 

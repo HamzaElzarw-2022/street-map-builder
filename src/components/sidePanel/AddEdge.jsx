@@ -13,6 +13,7 @@ function AddEdge({ nodes, node, setEdges, setNodes, setPendingRef, equalsPending
     if(selecting && equalsPendingRef("connectWith") && reference.type === "NODE") {
       if(reference.id === node.id) {
         setMessages(prev => [...prev, { id: getNextMessageId(), type: "error", text: "Selected node cannot be same!" }]);
+        setSelecting(false);
         return;
       }
       const otherNode = nodes.filter(node => node.id === reference.id)[0];
@@ -21,6 +22,11 @@ function AddEdge({ nodes, node, setEdges, setNodes, setPendingRef, equalsPending
 
       setEdges(prev => [...prev, newEdge]);
     } else if(selecting && equalsPendingRef("COORDINATE")) {
+      if(reference.type !== "COORDINATE") {
+        setMessages(prev => [...prev, { id: getNextMessageId(), type: "error", text: "point can't be on an element! please point on an empty space." }]);
+        setSelecting(false);
+        return;
+      }
 
       const coordinates = reference.id; //TODO: update reference (id to be generalized)
       const nextNodeId = getNextNodeId();

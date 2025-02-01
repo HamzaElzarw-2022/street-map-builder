@@ -11,9 +11,9 @@ const messageStyles = {
 const Message = ({ id, type, text, onClose }) => {
   return (
     <motion.div
-      initial={{ opacity: 0, x: -20 }}
-      animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0, x: -20 }}
+      initial={{ opacity: 0, x: 30 }}
+      animate={{ opacity: 2, x: 0 }}
+      exit={{ opacity: 0, x: 30 }}
       className={`standard-font relative p-2 rounded-lg shadow-md flex items-center ${messageStyles[type]}`}
     >
       <span className="flex-1">{text}</span>

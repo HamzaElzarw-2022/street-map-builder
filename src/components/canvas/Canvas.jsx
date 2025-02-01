@@ -1,7 +1,6 @@
 import {Circle, Layer, Line, Stage} from "react-konva";
 import Grid from "./Grid.jsx";
 import {edgeColor, endColor, nodeColor, selectedEdgeColor, startColor, thick} from "../../data/constants.js";
-import {useState} from "react";
 
 function Canvas({ scale, nodes, setNodes, edges, selected, setSelected, pendingRef, setReference, stagePos, setStagePos }) {
 
