@@ -22,6 +22,9 @@ class Edge {
   setEnd(end) {
     return new Edge(this.id, this.name, this.start, end);
   }
+  flipSides() {
+    return new Edge(this.id, this.name, this.end, this.start);
+  }
 }
 
 export default Edge;

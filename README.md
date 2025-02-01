@@ -5,7 +5,12 @@ structure. This application allows users to design maps by defining intersection
 with attributes like direction and speed limits. It is built with React to ensure scalability, reusability, 
 and a user-friendly interface.
 
-This project is built as a prerequisite another project to be developed later.
+This project is built as a prerequisite for another project to be developed later.
+<div style="display: flex; align-items: center; justify-content: center; flex-direction: column" >
+  <img src="screenshot.png" style="width: 70%; " alt="screenshot" >
+  <p>progress so far</p>
+</div>
+
 
 ## Features (in development)
 

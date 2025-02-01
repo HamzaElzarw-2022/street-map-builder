@@ -1,7 +1,7 @@
 import {endColor, startColor} from "../../data/constants.js";
 import {useEffect} from "react";
 import PropertyInputField from "./PropertyInputField.jsx";
-import {Trash2} from "lucide-react";
+import {Trash2, Repeat} from "lucide-react";
 
 function EdgeDetails({nodes, edge, setEdges, selected, setSelected, equalsPendingRef, pendingRef, setPendingRef, reference}) {
 
@@ -33,11 +33,17 @@ function EdgeDetails({nodes, edge, setEdges, selected, setSelected, equalsPendin
     setSelected({type: null, id: null});
     setEdges(prev => prev.filter(e => e.id !== edge.id ));
   }
+  const flipEdgeSides = () => {
+    setEdges(prev => prev.map(e => (e.id === edge.id)? e.flipSides(): e));
+  }
 
   return (
     <div className={"m-2.5 p-2.5 border-1 rounded-md border-neutral-700"}>
-      <div className={"flex items-center"}>
+      <div className={"flex items-center gap-2"}>
         <div className={"flex-auto"}>Street selected:</div>
+        <button className={"cursor-pointer"} onClick={flipEdgeSides}>
+          <Repeat size={18} color={"blue"} />
+        </button>
         <button className={"cursor-pointer"} onClick={removeEdge}>
           <Trash2 size={18} color={"red"}/>
         </button>
