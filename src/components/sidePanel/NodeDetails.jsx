@@ -30,7 +30,7 @@ function NodeDetails({ children, node, setNodes }) {
       <PropertyInputField label={"long"} type={"number"} value={node.y} onChange={e => {inputChange(e, "y", true)}} />
       <div className={"border-t-1 border-neutral-700 pt-2.5 mt-1"}>Streets connected:</div>
       {children[0]}
-      { addingEdge ? children[1] : <div className={"cursor-pointer border-1 rounded-xl border-neutral-700 mt-2.5 bg-gray-900 text-center p-1"} onClick={() => setAddingEdge(true)}>Add street</div>}
+      {children[1]}
     </div>
   );
 }

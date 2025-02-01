@@ -1,11 +1,12 @@
 import NodeDetails from "./NodeDetails.jsx";
 import EdgeDetails from "./EdgeDetails.jsx";
-import NodeForm from "./NodeForm.jsx";
-import EdgeForm from "./EdgeForm.jsx";
 import NodeEdges from "./NodeEdges.jsx";
+import {getNextNodeId} from "../../data/mockData.js";
+import Node from "../../models/Node.js";
+import AddEdge from "./AddEdge.jsx";
 
 function SidePanel({nodes, setNodes, selected, setSelected, edges, setEdges, panelWidth, setPanelWidth,
-                   pendingRef, setPendingRef, equalsPendingRef, reference, setMessages }) {
+                   pendingRef, setPendingRef, equalsPendingRef, reference, setMessages, getCanvasCenter }) {
 
   const handleMouseDown = (e) => {
     e.preventDefault();
@@ -22,16 +23,19 @@ function SidePanel({nodes, setNodes, selected, setSelected, edges, setEdges, pan
     document.removeEventListener('mousemove', handleMouseMove);
     document.removeEventListener('mouseup', handleMouseUp);
   };
+  const createNode = () => {
+
+    const screenCenter = getCanvasCenter();
+    const nextId = getNextNodeId();
+    const newNode = new Node(nextId, "intersection_"+nextId, screenCenter.x, screenCenter.y);
+
+    setNodes(prev => [...prev, newNode]);
+    setSelected({type: "NODE", id: newNode.id});
+  }
 
   return (
     <div style={{width: panelWidth}} className={"standard-font rounded-br-2xl rounded-tr-2xl border-r-1 border-r-neutral-700 h-full fixed top-0 left-0 bg-neutral-950 overflow-x-hidden overflow-y-auto"}>
-
-      {(selected.type === "ADD NODE")?
-        <NodeForm setSelected={setSelected} setNodes={setNodes} setMessages={setMessages} /> :
-        <div className={"cursor-pointer m-2.5 p-1 border-1 rounded-xl border-neutral-700 bg-gray-900 text-center"}
-             onClick={() => setSelected({type: "ADD NODE", id: null})}>
-          add intersection
-        </div>}
+      <div className={"cursor-pointer m-2.5 p-1 border-1 rounded-xl border-neutral-700 bg-gray-900 text-center"} onClick={createNode}>add intersection</div>
 
       {selected.type === "NODE" && nodes.filter(node => node.id === selected.id).map(node =>
         <NodeDetails node={node} setNodes={setNodes}>
@@ -39,9 +43,10 @@ function SidePanel({nodes, setNodes, selected, setSelected, edges, setEdges, pan
                      edges={edges}
                      setSelected={setSelected}
           />
-          <EdgeForm node={node}
+          <AddEdge  node={node}
                     nodes={nodes}
                     setEdges={setEdges}
+                    setNodes={setNodes}
                     pendingRef={pendingRef}
                     setPendingRef={setPendingRef}
                     equalsPendingRef={equalsPendingRef}

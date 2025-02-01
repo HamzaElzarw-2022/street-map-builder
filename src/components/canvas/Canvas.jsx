@@ -3,9 +3,7 @@ import Grid from "./Grid.jsx";
 import {edgeColor, endColor, nodeColor, selectedEdgeColor, startColor, thick} from "../../data/constants.js";
 import {useState} from "react";
 
-function Canvas({ scale, nodes, setNodes, edges, selected, setSelected, pendingRef, setReference }) {
-
-  const [stagePos, setStagePos] = useState({ x: (window.innerWidth/2), y: window.innerHeight/2 });
+function Canvas({ scale, nodes, setNodes, edges, selected, setSelected, pendingRef, setReference, stagePos, setStagePos }) {
 
   /**
    * Handles dragging intersections from canvas and updates nodes position
@@ -35,7 +33,7 @@ function Canvas({ scale, nodes, setNodes, edges, selected, setSelected, pendingR
    */
   const gridClicked = (e) => {
     if(pendingRef === "COORDINATE")
-      setReference({type: "COORDINATE", id: {x: e.target.x, y: e.target.y}});
+      setReference({type: "COORDINATE", id: {x: e.target.x(), y: e.target.y()}});
     else
       setSelected({type: null, id: null})
   }
