@@ -36,7 +36,7 @@ function SidePanel({nodes, setNodes, selected, setSelected, edges, setEdges, pan
   }
 
   return (
-    <div style={{width: panelWidth}} className={"standard-font rounded-br-2xl rounded-tr-2xl border-r-1 border-r-neutral-700 h-full fixed top-0 left-0 bg-neutral-950 overflow-x-hidden overflow-y-auto"}>
+    <div style={{width: panelWidth}} className={"z-10 standard-font rounded-br-2xl rounded-tr-2xl border-r-1  border-neutral-700 fixed bottom-0 top-12 left-0 bg-neutral-950 overflow-x-hidden overflow-y-auto"}>
       <div className={"max-w-full flex m-2.5"}>
         <button className={"flex-auto cursor-pointer h-7 rounded-md bg-blue-950 hover:bg-indigo-900 gap-1 justify-center flex items-center"} onClick={createNode}>
           <Plus size={19} strokeWidth={3} />add intersection

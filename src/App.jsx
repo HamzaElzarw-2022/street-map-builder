@@ -4,10 +4,11 @@ import SidePanel from './components/sidePanel/SidePanel.jsx'
 import { edgesData, nodesData } from './data/mockData.js'
 import Canvas from "./components/canvas/Canvas.jsx";
 import MessageContainer from "./components/MessageContainer.jsx";
+import Navbar from "./components/Navbar.jsx";
 
 function App() {
 
-  const [panelWidth, setPanelWidth] = useState(300);
+  const [panelWidth, setPanelWidth] = useState(350);
   const [stagePos, setStagePos] = useState({ x: ((window.innerWidth + panelWidth)/2), y: window.innerHeight/2 });
   const [scale, setScale] = useState(1);
   const [nodes, setNodes] = useState(nodesData);
@@ -60,6 +61,7 @@ function App() {
   
   return (
     <>
+      <Navbar nodes={nodes} edges={edges} setEdges={setEdges} setNodes={setNodes} setMessages={setMessages}/>
       <Canvas
         pendingRef={pendingRef}
         setSelected={setSelected}

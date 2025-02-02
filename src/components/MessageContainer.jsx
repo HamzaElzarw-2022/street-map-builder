@@ -46,7 +46,7 @@ const MessageContainer = ({ messages, duration = 2000 }) => {
   };
 
   return (
-    <div className="fixed top-4 right-4 space-y-3 max-w-xs w-full">
+    <div className="fixed top-15 right-3 space-y-3 max-w-xs w-full">
       <AnimatePresence>
         {activeMessages.map((msg) => (
           <Message key={msg.id} {...msg} onClose={removeMessage} />
