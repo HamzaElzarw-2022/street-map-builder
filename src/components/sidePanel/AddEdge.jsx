@@ -4,7 +4,7 @@ import Edge from "../../models/Edge.js";
 import {getNextEdgeId, getNextMessageId, getNextNodeId} from "../../data/mockData.js";
 import { X, Plus } from "lucide-react";
 
-function AddEdge({ nodes, node, setEdges, setNodes, setPendingRef, equalsPendingRef, reference, setMessages }) {
+function AddEdge({ nodes, node, setEdges, setNodes, setPendingRef, equalsPendingRef, reference, setMessages, setSelected }) {
 
   const [selecting, setSelecting] = useState(false);
 
@@ -18,9 +18,11 @@ function AddEdge({ nodes, node, setEdges, setNodes, setPendingRef, equalsPending
       }
       const otherNode = nodes.filter(node => node.id === reference.id)[0];
       const nextEdgeId = getNextEdgeId();
-      const newEdge = new Edge(nextEdgeId, "connection_"+nextEdgeId, node, otherNode);
+      const newEdge = new Edge(nextEdgeId, "connection_"+nextEdgeId, node, otherNode, 0);
 
       setEdges(prev => [...prev, newEdge]);
+      setSelected({type: "EDGE", id: nextEdgeId});
+
     } else if(selecting && equalsPendingRef("COORDINATE")) {
       if(reference.type !== "COORDINATE") {
         setMessages(prev => [...prev, { id: getNextMessageId(), type: "error", text: "point can't be on an element! please point on an empty space." }]);
@@ -34,8 +36,10 @@ function AddEdge({ nodes, node, setEdges, setNodes, setPendingRef, equalsPending
       setNodes(prev => [...prev, otherNode]);
 
       const nextEdgeId = getNextEdgeId();
-      const newEdge = new Edge(nextEdgeId, "connection_"+nextEdgeId, node, otherNode);
+      const newEdge = new Edge(nextEdgeId, "connection_"+nextEdgeId, node, otherNode, 0);
       setEdges(prev => [...prev, newEdge]);
+
+      setSelected({type: "NODE", id: nextNodeId});
     }
     setSelecting(false);
   }, [reference]);

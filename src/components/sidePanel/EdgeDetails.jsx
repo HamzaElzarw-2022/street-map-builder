@@ -1,9 +1,11 @@
 import {endColor, startColor} from "../../data/constants.js";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import PropertyInputField from "./PropertyInputField.jsx";
 import {Trash2, Repeat} from "lucide-react";
 
 function EdgeDetails({nodes, edge, setEdges, selected, setSelected, equalsPendingRef, pendingRef, setPendingRef, reference}) {
+
+  const [distance, setDistance] = useState(calculateDistance(edge.start, edge.end));
 
   useEffect(() => {
     if(reference.type === "EDGE") return;
@@ -14,6 +16,10 @@ function EdgeDetails({nodes, edge, setEdges, selected, setSelected, equalsPendin
       setEdges((prev) => prev.map(edge => (edge.id === selected.id) ? edge.setStart(nodes.filter(node => node.id === reference.id)[0]) : edge ));
 
   }, [reference]);
+
+  useEffect(() => {
+    setDistance(calculateDistance(edge.start, edge.end));
+  }, [edge])
 
   /**
    * @param {MouseEvent} e
@@ -28,6 +34,10 @@ function EdgeDetails({nodes, edge, setEdges, selected, setSelected, equalsPendin
         edge[attribute] = value;
       return edge;
     }));
+  }
+  function calculateDistance(start, end) {
+    let distance = Math.sqrt(Math.pow(end.x - start.x, 2) + Math.pow(end.y - start.y, 2));
+    return Math.round(distance * 10) / 10; // Rounding to the nearest tenth
   }
   const removeEdge = () => {
     setSelected({type: null, id: null});
@@ -50,6 +60,8 @@ function EdgeDetails({nodes, edge, setEdges, selected, setSelected, equalsPendin
       </div>
       <PropertyInputField label={"id"} type={"text"} value={edge.id} disable />
       <PropertyInputField label={"name"} type={"text"} value={edge.name} onChange={e => {inputChange(e, "name")}} />
+      <PropertyInputField label={"speed"} type={"number"} value={edge.speed?edge.speed:0} onChange={e => {inputChange(e, "speed")}} />
+      <PropertyInputField label={"distance"} type={"text"} value={distance} disable />
 
       {/*TODO: resolve duplicates and fix overflow of text when selecting*/}
       <div className="flex border-t-1 border-neutral-700 pt-1 mt-1 items-center h-7">

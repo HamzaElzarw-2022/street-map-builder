@@ -58,6 +58,7 @@ function SidePanel({nodes, setNodes, selected, setSelected, edges, setEdges, pan
                     equalsPendingRef={equalsPendingRef}
                     reference={reference}
                     setMessages={setMessages}
+                    setSelected={setSelected}
           />
         </NodeDetails>
       )}
