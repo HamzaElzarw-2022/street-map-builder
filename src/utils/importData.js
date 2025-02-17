@@ -35,7 +35,8 @@ async function importData(file) {
             edgeData.id,
             edgeData.name,
             start,
-            end
+            end,
+            edgeData.speed
           );
         });
 

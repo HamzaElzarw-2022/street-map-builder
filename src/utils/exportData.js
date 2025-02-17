@@ -10,7 +10,8 @@ function exportData(nodes, edges) {
       id: edge.id,
       name: edge.name,
       startId: edge.start.id,
-      endId: edge.end.id
+      endId: edge.end.id,
+      speed: edge.speed
     }))
   };
 
