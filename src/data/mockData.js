@@ -7,6 +7,10 @@ let messageIdSequence = 0;
 export const getNextNodeId = () => nodeIdSequence++;
 export const getNextEdgeId = () => edgeIdSequence++;
 export const getNextMessageId = () => messageIdSequence++;
+export const setIdSequences = (nodeId, edgeId) => {
+  nodeIdSequence = nodeId+1;
+  edgeIdSequence = edgeId+1;
+}
 
 export const nodesData= [
   new Node(1, "intersection1", 50, -50),
