@@ -60,7 +60,7 @@ function EdgeDetails({nodes, edge, setEdges, selected, setSelected, equalsPendin
       </div>
       <PropertyInputField label={"id"} type={"text"} value={edge.id} disable />
       <PropertyInputField label={"name"} type={"text"} value={edge.name} onChange={e => {inputChange(e, "name")}} />
-      <PropertyInputField label={"speed"} type={"number"} value={edge.speed?edge.speed:0} onChange={e => {inputChange(e, "speed")}} />
+      <PropertyInputField label={"speed (km)"} type={"number"} value={edge.speed?edge.speed:0} onChange={e => {inputChange(e, "speed")}} />
       <PropertyInputField label={"distance"} type={"text"} value={distance} disable />
 
       {/*TODO: resolve duplicates and fix overflow of text when selecting*/}

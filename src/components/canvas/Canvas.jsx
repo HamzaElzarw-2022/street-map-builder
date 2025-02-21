@@ -1,6 +1,15 @@
 import {Circle, Layer, Line, Stage} from "react-konva";
 import Grid from "./Grid.jsx";
-import {edgeColor, endColor, nodeColor, selectedEdgeColor, startColor, thick} from "../../data/constants.js";
+import {
+  edgeColor,
+  endColor,
+  highSpeed,
+  highSpeedEdgeColor,
+  nodeColor,
+  selectedEdgeColor,
+  startColor,
+  thick
+} from "../../data/constants.js";
 
 function Canvas({ scale, nodes, setNodes, edges, selected, setSelected, pendingRef, setReference, stagePos, setStagePos }) {
 
@@ -59,7 +68,7 @@ function Canvas({ scale, nodes, setNodes, edges, selected, setSelected, pendingR
           {edges.map(edge => (
             <Line
               points={[edge.start.x, edge.start.y, edge.end.x, edge.end.y]}
-              stroke={edgeColor}
+              stroke={(edge.speed >= highSpeed)? highSpeedEdgeColor : edgeColor}
               strokeWidth={thick * 2}
               key={edge.id}
               onClick={() => elementClicked("EDGE", edge)}

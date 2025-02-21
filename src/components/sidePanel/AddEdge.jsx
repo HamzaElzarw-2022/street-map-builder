@@ -3,6 +3,7 @@ import {useEffect, useState} from "react";
 import Edge from "../../models/Edge.js";
 import {getNextEdgeId, getNextMessageId, getNextNodeId} from "../../data/mockData.js";
 import { X, Plus } from "lucide-react";
+import {defaultSpeed} from "../../data/constants.js";
 
 function AddEdge({ nodes, node, setEdges, setNodes, setPendingRef, equalsPendingRef, reference, setMessages, setSelected }) {
 
@@ -18,7 +19,7 @@ function AddEdge({ nodes, node, setEdges, setNodes, setPendingRef, equalsPending
       }
       const otherNode = nodes.filter(node => node.id === reference.id)[0];
       const nextEdgeId = getNextEdgeId();
-      const newEdge = new Edge(nextEdgeId, "connection_"+nextEdgeId, node, otherNode, 0);
+      const newEdge = new Edge(nextEdgeId, "connection_"+nextEdgeId, node, otherNode, defaultSpeed);
 
       setEdges(prev => [...prev, newEdge]);
       setSelected({type: "EDGE", id: nextEdgeId});
@@ -36,7 +37,7 @@ function AddEdge({ nodes, node, setEdges, setNodes, setPendingRef, equalsPending
       setNodes(prev => [...prev, otherNode]);
 
       const nextEdgeId = getNextEdgeId();
-      const newEdge = new Edge(nextEdgeId, "connection_"+nextEdgeId, node, otherNode, 0);
+      const newEdge = new Edge(nextEdgeId, "connection_"+nextEdgeId, node, otherNode, defaultSpeed);
       setEdges(prev => [...prev, newEdge]);
 
       setSelected({type: "NODE", id: nextNodeId});
